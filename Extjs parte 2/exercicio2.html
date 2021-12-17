@@ -1,0 +1,26 @@
+<html>
+
+<head>
+    <link rel="stylesheet" type="text/css" href="../Ext/ext-all.css">
+    <script type="text/javascript" src="../Ext/ext-all.js"></script>
+</head>
+
+<body></body>
+
+<script>
+    Ext.create('Ext.form.Panel', {
+        title: 'Exercicio 2',
+        width: 400,
+        bodyPadding: 10,
+        renderTo: Ext.getBody(),
+        items: [{
+            xtype: 'textfield',
+            name: 'email',
+            fieldLabel: 'Email',
+            vtype: 'email'
+        }]
+        
+    });
+</script>
+
+</html>
