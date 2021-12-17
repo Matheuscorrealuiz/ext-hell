@@ -14,6 +14,7 @@ Ext.define("CadastroModel", {
 });
 
 var dados = Ext.create("Ext.data.Store", {
+    storeId: "CadastroStore",
     model: "CadastroModel",
     data: [
         {
@@ -26,12 +27,18 @@ var dados = Ext.create("Ext.data.Store", {
             cidade: "São Leopoldo",
             dataNascimento: "04/12/2001",
             telefone: "982060078",
-        },
-        /*{
-            "nome": 'Alan', "sobrenome": 'sla', "email": 'sla@gmail.com', "senha": '123456',
-            "cpf": '3333333333', "rg": '4444444444', "cidade": 'São Leopoldo',
-            "dataNascimento": '12/11/2001', "telefone": '911111111'
-        }*/
+        } /*
+        {
+            nome: "Alan",
+            sobrenome: "sla",
+            email: "sla@gmail.com",
+            senha: "123456",
+            cpf: "3333333333",
+            rg: "4444444444",
+            cidade: "São Leopoldo",
+            dataNascimento: "12/11/2001",
+            telefone: "911111111",
+        },*/,
     ],
     proxy: {
         type: "memory",
@@ -117,18 +124,37 @@ var form = Ext.create("Ext.form.Panel", {
         },
     ],
 });
+const getFormInfo = () => {
+    // retorna um array com os campos do formulario
+    return form.items.items[0].items.items;
+};
 
-let dadosItems = dados.data.items;
-var teste = Ext.getCmp("cadastroForm").getValues();
+const getFormExtra = () => {
+    // [0].setRawValue("opaepa")
+    return form.items.items[1].items.items;
+};
 
-/* const executar = () => {
-     console.log(form.items.items[0].items.items)//recebe dados dos seis primeiros campos
-}*/
+// Ext.getStore pega os dados da store pelo ID.
+const getStore = () => {
+    // retorna um objeto, com os dados acessíveis via .raw.cidade (ex)
+    return Ext.getStore("CadastroStore").getAt(0);
+};
 
-Ext.Array.each(form.items, function () {
-    console.log((storeItems = form.items.items[0].items.items));
-    Ext.Array.each(form.items, function () {
-        console.log((storeItems = form.items.items[1].items.items));
+// Joina os dois formulários
+const joinForm = () => {
+    return getFormInfo().concat(getFormExtra());
+};
+
+// Converte um obj para um array (a store do ext vem em forma de objeto)
+const convertObjToArray = () => {
+    return Object.values(getStore().raw);
+};
+
+// Preenche o formulário usando os valores obtidos da store
+const fillFormData = () => {
+    Ext.Array.each(joinForm(), (name, index) => {
+        name.setRawValue(convertObjToArray()[index]);
     });
-    console.log(teste);
-});
+};
+
+fillFormData();
